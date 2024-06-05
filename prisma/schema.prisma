@@ -9,3 +9,27 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  productId          String   @id @default(uuid())
+  barcode            String
+  sku                String
+  name               String
+  description        String
+  categoryId         Category @relation(fields: [categoryCategoryId], references: [categoryId])
+  price              Float
+  costPrice          Float
+  discount           Float
+  stockQuantity      Int
+  weight             Float
+  categoryCategoryId String
+}
+
+model Category {
+  categoryId String     @id @default(uuid())
+  name       String
+  parentId   String?
+  parent     Category?  @relation("CategoryToParent", fields: [parentId], references: [categoryId])
+  children   Category[] @relation("CategoryToParent")
+  Product    Product[]
+}

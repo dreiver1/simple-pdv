@@ -2,6 +2,7 @@ const Express = require('express')
 import Category from "./routers/category"
 
 const server = Express()
+server.use(Express.json())
 
 server.use('/category', Category)
 

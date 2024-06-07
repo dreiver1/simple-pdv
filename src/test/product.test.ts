@@ -35,14 +35,10 @@ describe('test route product', () => {
         stockQuantity: 3 
     }
 
-
     it('should create a product', async () => {
         const res = await request(server).post('/product').send(product).expect(200)
-
         newProduct = res.body
-
         expect(res.body.name === 'house')
-
     })
 
     it("should find a product", async () => {

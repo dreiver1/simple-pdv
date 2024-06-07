@@ -15,10 +15,11 @@ interface Category {
 }
 
 describe('test route category', ()=> {
-
+    let newCategory: Category
     it('should create a category', async () => {
         const category = { name: 'house' }
         const res = await request(server).post('/category').send(category).expect(200)
+        newCategory = res.body
         expect(res.body.name === 'house')
     })
 
@@ -34,9 +35,7 @@ describe('test route category', ()=> {
     })
 
     it('should delete a category', async () => {
-        let data: Category
-        const res = await request(server).get(`/category/house`).expect(200)
-        const category = await request(server).delete(`/category/${res.body.categoryId}`)
+        const category = await request(server).delete(`/category/${newCategory.categoryId}`)
         expect(category.body.name === 'house')
     })
 })

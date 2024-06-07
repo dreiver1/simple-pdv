@@ -17,10 +17,10 @@ class Category implements Controler {
 
     async getUnique(req: Request, res: Response) {
         try {
-            const { name } = req.params
+            const { categoryId } = req.params
             const category = await prisma.category.findMany({
                 where: {
-                    name: name
+                    categoryId: categoryId
                 }
             })
             if (category.length == 0) {

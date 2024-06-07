@@ -9,7 +9,7 @@ const control = new Category()
 const app = Router()
 
 app.get('/', control.get)
-app.get('/:name', control.getUnique)
+app.get('/:categoryId', control.getUnique)
 app.post('/', control.post)
 app.delete('/:categoryId', control.delete)
 app.put('/:categoryId', control.put)

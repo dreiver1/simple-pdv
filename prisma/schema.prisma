@@ -19,13 +19,13 @@ model Product {
   sku                String
   name               String
   description        String
-  categoryId         Category @relation(fields: [categoryCategoryId], references: [categoryId])
+  categoryId         Category? @relation(fields: [categoryCategoryId], references: [categoryId])
   price              Float
   costPrice          Float
-  discount           Float
+  discount           Float?
   stockQuantity      Int
-  weight             Float
-  categoryCategoryId String
+  weight             Float?
+  categoryCategoryId String?
 }
 
 model Category {

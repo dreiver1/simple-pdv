@@ -2,10 +2,10 @@
   "name": "simple-pdv",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "vitest run",
-    "dev": "tsx watch src/main.ts"
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",

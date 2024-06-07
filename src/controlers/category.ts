@@ -18,22 +18,16 @@ class Category implements Controler {
     async getUnique(req: Request, res: Response) {
         try {
             const { name } = req.params
-            const categoryExist = await prisma.category.findMany({
+            const category = await prisma.category.findMany({
                 where: {
                     name: name
                 }
             })
-            if (categoryExist.length == 0) {
-                res.status(400).send('The category not exist')
+            if (category.length == 0) {
+                res.status(400).send('The category dont exist')
             } else {
-                const data = await prisma.category.findFirst({
-                    where: {
-                        name: name
-                    }
-                })
-                res.json(data).status(200)
+                res.json(category[0]).status(200)
             }
-
         } catch (error) {
             res.send(error)
         }

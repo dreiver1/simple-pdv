@@ -1,17 +1,17 @@
-import Category from '../controlers/category'
+import Product from '../controlers/Product'
 import { Router } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { Request, Response } from "express"
 const prisma = new PrismaClient()
 
-const control = new Category()
+const control = new Product()
 
 const app = Router()
 
 app.get('/', control.get)
-app.get('/:name', control.getUnique)
+app.get('/:productId', control.getUnique)
 app.post('/', control.post)
-app.delete('/:categoryId', control.delete)
-app.put('/:categoryId', control.put)
+app.delete('/:productId', control.delete)
+app.put('/:productId', control.put)
 
 export default app

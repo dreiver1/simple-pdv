@@ -1,17 +1,15 @@
 import Category from '../controlers/category'
 import { Router } from 'express'
-import { PrismaClient } from '@prisma/client'
-import { Request, Response } from "express"
-const prisma = new PrismaClient()
 
 const control = new Category()
 
 const app = Router()
 
 app.get('/', control.get)
-app.get('/:categoryId', control.getUnique)
+app.get('/:categoryId', control.getById)
 app.post('/', control.post)
 app.delete('/:categoryId', control.delete)
 app.put('/:categoryId', control.put)
+app.get('/name/:name', control.getByName)
 
 export default app

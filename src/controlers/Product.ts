@@ -1,9 +1,49 @@
 import { PrismaClient } from "@prisma/client";
 import Controller from "../controlers/Controler";
 import { Request, Response } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 const prisma = new PrismaClient()
 
 class Product implements Controller {
+
+    async getById(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) {
+        try {
+            const { productId } = req.params
+            const product = await prisma.product.findUnique({
+                where: {
+                    productId: productId
+                }
+            })
+            if (product == null || product == undefined) {
+                res.status(404).send('product not find')
+            } else {
+                res.status(200).json(product)
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500)
+        }
+    }
+
+    async getByName(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) {
+        try {
+            const { name } = req.params
+            const product = await prisma.product.findFirst({
+                where: {
+                    name: name
+                }
+            })
+            if (product == null || product == undefined) {
+                res.status(404).send('product not find')
+            } else {
+                res.status(200).json(product)
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500)
+        }
+    }
 
     async delete(req: Request, res: Response): Promise<void> {
         try {

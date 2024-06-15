@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Product {
-  productId          String   @id @default(uuid())
+  productId          String    @id @default(uuid())
   barcode            String
   sku                String
   name               String
@@ -26,6 +26,7 @@ model Product {
   stockQuantity      Int
   weight             Float?
   categoryCategoryId String?
+  items              Item[]
 }
 
 model Category {
@@ -35,4 +36,18 @@ model Category {
   parent     Category?  @relation("CategoryToParent", fields: [parentId], references: [categoryId])
   children   Category[] @relation("CategoryToParent")
   Product    Product[]
+}
+
+model Order {
+  orderId String @id @default(uuid())
+  items   Item[]
+}
+
+model Item {
+  quantity         Int
+  itemId           String   @id @default(uuid())
+  Product          Product? @relation(fields: [productProductId], references: [productId])
+  productProductId String?
+  Order            Order?   @relation(fields: [orderOrderId], references: [orderId])
+  orderOrderId     String?
 }

@@ -15,12 +15,30 @@ class Category implements Controler {
         }
     }
 
-    async getUnique(req: Request, res: Response) {
+    async getById(req: Request, res: Response) {
         try {
             const { categoryId } = req.params
             const category = await prisma.category.findMany({
                 where: {
                     categoryId: categoryId
+                }
+            })
+            if (category.length == 0) {
+                res.status(400).send('The category dont exist')
+            } else {
+                res.json(category[0]).status(200)
+            }
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    async getByName(req: Request, res: Response) {
+        try {
+            const { name } = req.params
+            const category = await prisma.category.findMany({
+                where: {
+                    name: name
                 }
             })
             if (category.length == 0) {

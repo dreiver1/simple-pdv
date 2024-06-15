@@ -26,7 +26,7 @@ describe('test route product', () => {
     var newProduct: product
 
     const product: product = { 
-        name: 'house', 
+        name: 'cavalo de troia', 
         barcode: 'AJKSDFLKALKASDFHJ', 
         costPrice: 300, 
         description: 'a product', 

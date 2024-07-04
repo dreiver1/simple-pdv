@@ -7,7 +7,7 @@ const app = Router()
 
 app.get('/', control.get)
 app.get('/:itemId', control.getById)
-app.get('/name/:itemId', control.getByName)
+app.get('/order/:orderId', control.getByOrder)
 app.post('/', control.post)
 app.delete('/:itemId', control.delete)
 app.put('/:itemId', control.put)

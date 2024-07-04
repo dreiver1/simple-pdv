@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model user {
+  userId   String @id @default(uuid())
+  name     String
+  password String
+  userName String
+  email    String
+  data     String
+  cpf      String
+}
+
 model Product {
   productId          String    @id @default(uuid())
   barcode            String
@@ -39,15 +49,18 @@ model Category {
 }
 
 model Order {
-  orderId String @id @default(uuid())
+  orderId String   @id @default(uuid())
   items   Item[]
+  date    DateTime @default(now())
+  status  String
+  paypamentMethod String
 }
 
 model Item {
-  quantity         Int
-  itemId           String   @id @default(uuid())
-  Product          Product? @relation(fields: [productProductId], references: [productId])
-  productProductId String?
-  Order            Order?   @relation(fields: [orderOrderId], references: [orderId])
-  orderOrderId     String?
+  quantity  Int
+  itemId    String   @id @default(uuid())
+  Product   Product? @relation(fields: [productId], references: [productId])
+  productId String?
+  Order     Order?   @relation(fields: [orderId], references: [orderId])
+  orderId   String?
 }

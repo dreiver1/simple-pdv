@@ -6,6 +6,48 @@ import { ParsedQs } from "qs";
 const prisma = new PrismaClient()
 
 class Item implements Controller {
+    async getByOrder(req: Request, res: Response) {
+        try {
+            const { orderId } = req.params;
+            const order = await prisma.order.findUnique({
+                where: {
+                    orderId: orderId
+                }
+            });
+    
+            if (!order) {
+                res.status(404).send('Order doesn\'t exist');
+            } else {
+                const items = await prisma.item.findMany({
+                    where: {
+                        orderId: orderId
+                    }
+                });
+    
+                const completeOrder = await Promise.all(items.map(async (item) => {
+                    if (item.productId) {
+                        const product = await prisma.product.findUnique({
+                            where: {
+                                productId: item.productId
+                            }
+                        });
+                        return {
+                            quantity: item.quantity,
+                            name: product?.name,
+                            price: product?.price,
+                            barcode: product?.sku,
+                            discount: product?.discount
+                        };
+                    }
+                }));
+    
+                res.status(200).json(completeOrder.filter(item => item !== undefined));
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error);
+        }
+    }
 
     async getById(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) {
         try {
@@ -104,11 +146,11 @@ class Item implements Controller {
 
     async post(req: Request, res: Response): Promise<void> {
         try {
-            const { OrderId, ProductId, quantity } = req.body
+            const { orderId, productId, quantity } = req.body
             const item = await prisma.item.create({
                 data: {
-                    orderOrderId: OrderId,
-                    productProductId: ProductId,
+                    orderId: orderId,
+                    productId: productId,
                     quantity: quantity
                 }
             })
@@ -122,7 +164,7 @@ class Item implements Controller {
     async put(req: Request, res: Response): Promise<void> {
         try {
             const { itemId } = req.params
-            const {OrderId, ProductId, quantity} = req.body
+            const {orderId, productId, quantity} = req.body
             const data = await prisma.item.findMany({
                 where: {
                     itemId: itemId
@@ -136,8 +178,8 @@ class Item implements Controller {
                         itemId: itemId
                     },
                     data: {
-                        orderOrderId: OrderId,
-                        productProductId: ProductId,
+                        orderId: orderId,
+                        productId: productId,
                         quantity: quantity
                     }
                 })

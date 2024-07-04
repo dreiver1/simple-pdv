@@ -9,7 +9,9 @@ const prisma = new PrismaClient()
 class Order implements Controller {
     async post(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) {
         try {
-            const order = await prisma.order.create({})
+            const order = await prisma.order.create({
+                data: {}
+            })
             res.status(200).json(order)
         } catch (error) {
             console.log(error)
@@ -50,12 +52,12 @@ class Order implements Controller {
     async getById(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) {
         try {
             const { orderId } = req.params
-            const order = await prisma.order.delete({
+            const order = await prisma.order.findUnique({
                 where: {
                     orderId: orderId
                 }
             })
-            if(order == null || undefined){
+            if(!order){
                 res.status(404).send('order not found')
             }else{
                 res.status(200).json(order)

@@ -104,7 +104,7 @@ class Product implements Controller {
 
     async post(req: Request, res: Response): Promise<void> {
         try {
-            const {name, barcode, costPrice, description, discount, price, sku, stockQuantity, weight, categoryId} = req.body
+            const {name, barcode, costPrice, description, discount, price, sku, stockQuantity, weight, categoryId, imgURL} = req.body
             const data = await prisma.product.findMany({
                 where: {
                     name: name
@@ -124,7 +124,8 @@ class Product implements Controller {
                         sku: sku,
                         stockQuantity: stockQuantity,
                         weight: weight,
-                        categoryId: categoryId
+                        categoryId: categoryId,
+                        imgURL: imgURL
                     }
                 })
 
@@ -138,7 +139,7 @@ class Product implements Controller {
     async put(req: Request, res: Response): Promise<void> {
         try {
             const { productId } = req.params
-            const {name, barcode, costPrice, description, discount, price, sku, stockQuantity, weight, categoryId} = req.body
+            const {name, barcode, costPrice, description, discount, price, sku, stockQuantity, weight, categoryId, imgURL} = req.body
             const data = await prisma.product.findMany({
                 where: {
                     productId: productId
@@ -161,7 +162,8 @@ class Product implements Controller {
                         sku: sku,
                         stockQuantity: stockQuantity,
                         weight: weight,
-                        categoryId: categoryId
+                        categoryId: categoryId,
+                        imgURL: imgURL
                     }
                 })
 

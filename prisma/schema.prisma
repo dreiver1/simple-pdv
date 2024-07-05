@@ -37,6 +37,7 @@ model Product {
   weight             Float?
   categoryCategoryId String?
   items              Item[]
+  imgURL             String @default("/files/1720098149585_por-do-sol-e-silhuetas-de-arvores-nas-montanhas-generative-ai.jpg")
 }
 
 model Category {
@@ -49,11 +50,11 @@ model Category {
 }
 
 model Order {
-  orderId String   @id @default(uuid())
-  items   Item[]
-  date    DateTime @default(now())
-  status  String
-  paypamentMethod String
+  orderId         String   @id @default(uuid())
+  items           Item[]
+  date            DateTime @default(now())
+  status          String @default("await paypament")
+  paypamentMethod String @default("none")
 }
 
 model Item {

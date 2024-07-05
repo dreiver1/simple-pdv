@@ -9,7 +9,6 @@ const storeage = multer.diskStorage({
     },
     filename: (req, file, callback)=> {
         const time = new Date().getTime()
-
         callback(null, `${time}_${file.originalname}`)
     }
 })
@@ -18,7 +17,7 @@ const upload = multer({ storage: storeage })
 const route = Router()
 
 route.post('/upload', upload.single('file'), (req, res) => {
-    return res.json(req.file?.path)
+    return res.json(req.file?.filename)
 })
 
 

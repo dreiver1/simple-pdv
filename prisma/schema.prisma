@@ -17,10 +17,10 @@ model user {
   userId   String @id @default(uuid())
   name     String
   password String
-  userName String
-  email    String
+  userName String @unique
+  email    String @unique
   data     String
-  cpf      String
+  cpf      String @unique
 }
 
 model Product {

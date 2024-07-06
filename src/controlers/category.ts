@@ -54,11 +54,17 @@ class Category implements Controler {
     async post(req: Request, res: Response) {
         try {
             const { name, parentId } = req.body
-            const parentExist = await prisma.category.findUnique({
-                where: {
-                    categoryId: parentId
+            if(parentId){
+                const parentExist = await prisma.category.findUnique({
+                    where: {
+                        categoryId: parentId
+                    }
+                })
+
+                if(!parentExist){
+                    res.status(404).send('The category parent dont exist')
                 }
-            })
+            }
             const categoryExist = await prisma.category.findMany({
                 where: {
                     name: name
@@ -66,8 +72,6 @@ class Category implements Controler {
             })
             if (categoryExist.length >= 1) {
                 res.status(400).send('The category alred exist')
-            } else if(!parentExist){
-                res.status(404).send('The category parent dont exist')
             } else {
                 const data = await prisma.category.create({
                     data: {
@@ -113,12 +117,12 @@ class Category implements Controler {
     async delete(req: Request, res: Response) {
         try {
             const { categoryId } = req.params
-            const categoryExist = await prisma.category.findMany({
+            const categoryExist = await prisma.category.findUnique({
                 where: {
                     categoryId: categoryId
                 }
             })
-            if (categoryExist.length == 0) {
+            if (!categoryExist) {
                 res.status(400).send('The category not exist')
             } else {
                 const data = await prisma.category.delete({

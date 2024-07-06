@@ -15,16 +15,43 @@ interface Category {
 }
 
 describe('test route category', ()=> {
-    let newCategory: Category
+
+    let newCategory: Category = {
+        categoryId: '',
+        name: '',
+        parentId: ''
+    }
+
+
     it('should create a category', async () => {
-        const category = { name: 'house' }
+        const category = { name: 'CategoryOftest' }
         const res = await request(server).post('/category').send(category).expect(200)
-        newCategory = res.body
-        expect(res.body.name === 'house')
+        newCategory.categoryId = res.body.categoryId
+        newCategory.name = res.body.name
+        
+        expect(res.body.name === 'CategoryOftest')
+    })
+
+    it('should create a category whit parent', async () => {
+        const category: Category = { name: 'CategoryOftestChildrem', parentId: newCategory.categoryId, categoryId: ''}
+        const res = await request(server).post('/category').send(category).expect(200)        
+        expect(res.body.name === 'CategoryOftestChildrem')
+
+        await request(server).delete(`/category/${res.body.categoryId}`).expect(200)
+    })
+
+    it('should get a catergory by name', async () => {
+        const res = await request(server).get(`/category/name/${newCategory.name}`).expect(200)
+        expect(res.body.name === newCategory.name)
+    })
+
+    it('should get a catergory by Id', async () => {
+        const res = await request(server).get(`/category/${newCategory.categoryId}`).expect(200)
+        expect(res.body.name === newCategory.name)
     })
 
     it('should not create a category', async () => {
-        const category = { name: 'house' }
+        const category = { name: 'CategoryOftest' }
         const res = await request(server).post('/category').send(category).expect(400)
         expect(res.body === 'The category alred exist')
     })
@@ -35,7 +62,7 @@ describe('test route category', ()=> {
     })
 
     it('should delete a category', async () => {
-        const category = await request(server).delete(`/category/${newCategory.categoryId}`)
-        expect(category.body.name === 'house')
+        const category = await request(server).delete(`/category/${newCategory.categoryId}`).expect(200)
+        expect(category.body.name === 'CategoryOftest')
     })
 })

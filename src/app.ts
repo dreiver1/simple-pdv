@@ -4,6 +4,7 @@ import Product from "./routers/product"
 import Item from "./routers/item"
 import Order from "./routers/order"
 import File from './routers/file'
+import User from './routers/user'
 import cors = require('cors')
 const morgan = require('morgan')
 
@@ -17,5 +18,6 @@ app.use('/product', Product)
 app.use('/item', Item)
 app.use('/order', Order)
 app.use('/', File)
+app.use('/user', User)
 
 export default app

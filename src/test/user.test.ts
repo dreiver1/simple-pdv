@@ -19,6 +19,16 @@ interface User {
 
 describe('test User routers', ()=> {
 
+    beforeAll(async () => {
+        const res = await request(server).post('/login').send({
+            email: 'rootuser@user.com',
+            password: 'admin123'
+        })
+        accessToken = res.body.accessToken
+      })
+
+    let accessToken = ''
+
     const user: User = {
         cpf: '12345678910',
         data: '171020',
@@ -29,17 +39,24 @@ describe('test User routers', ()=> {
         userId: '123'
     }
 
-    it('should create an user', async () => {
-        const res = await request(server).post('/user').send(user).expect(200)
+    it('should create a user', async () => {
+        const res = await request(server)
+            .post('/user')
+            .set('Authorization', `Bearer ${accessToken}`)
+            .send(user)
+            .expect(200)
         user.userId = res.body.userId
-        expect(res.body.userId)
+        expect(res.body.userId).toBeDefined()
     })
 
     it('should not create a duplicated user', async () => {
-        const res = await request(server).post('/user').send(user).expect(401)
+        await request(server)
+            .post('/user')
+            .send(user)
+            .expect(401)
     })
 
-    it('should not create an user whit erro in constraints', async () => {
+    it('should not create a user with error in constraints', async () => {
         const newUser = {
             cpf: '1234',
             data: '171020',
@@ -49,62 +66,93 @@ describe('test User routers', ()=> {
             userName: 'testing123',
             userId: '123'
         }
-        await request(server).post('/user').send(newUser).expect(401)
+        await request(server)
+            .post('/user')
+            .send(newUser)
+            .expect(401)
     })
 
-    it('should receive all users', async ()=>{
-        const res = await request(server).get('/user').expect(200)
-        expect(res.body.length >= 1)
+    it('should receive all users', async () => {
+        const res = await request(server)
+            .get('/user')
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(200)
+        expect(res.body.length).toBeGreaterThanOrEqual(1)
     })
 
-    it('should receive an user by ID', async () => {
-        const res = await request(server).get(`/user/${user.userId}`).expect(200)
-        expect(res.body.userId === user.userId )
+    it('should receive a user by ID', async () => {
+        const res = await request(server)
+            .get(`/user/${user.userId}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(200)
+        expect(res.body.userId).toBe(user.userId)
     })
 
-    it('shouldnt receive an user by ID', async () => {
-        const res = await request(server).get(`/user/${user.userId + 'error' }`).expect(404)
-        expect(res.body.userId === user.userId )
+    it('should not receive a user by ID', async () => {
+        await request(server)
+            .get(`/user/${user.userId + 'error'}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(404)
     })
 
-    it('should receive an user by userName', async () => {
-        const res = await request(server).get(`/user/userName/${user.userName}`).expect(200)
-        expect(res.body.userName === user.userName )
+    it('should receive a user by userName', async () => {
+        const res = await request(server)
+            .get(`/user/userName/${user.userName}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(200)
+        expect(res.body.userName).toBe(user.userName)
     })
 
-    it('shouldnt receive an user by userName', async () => {
-        const res = await request(server).get(`/user/userName/${user.userName + 'error'}`).expect(404)
-        expect(res.body.userName === user.userName )
+    it('should not receive a user by userName', async () => {
+        await request(server)
+            .get(`/user/userName/${user.userName + 'error'}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(404)
     })
 
-    it('should receive an user by name', async () => {
-        const res = await request(server).get(`/user/name/${user.name}`).expect(200)
-        expect(res.body.name === user.name )
+    it('should receive a user by name', async () => {
+        const res = await request(server)
+            .get(`/user/name/${user.name}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(200)
+        expect(res.body.name).toBe(user.name)
     })
 
-    it('should put a name of user', async ()=> {
+    it('should update a user name', async () => {
         user.name = 'usuario teste putado'
-        const res = await request(server).put(`/user/${user.userId}`).send(user).expect(200)
-        expect(user.name === 'usuario teste putado')
+        const res = await request(server)
+            .put(`/user/${user.userId}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .send(user)
+            .expect(200)
+        expect(res.body.name).toBe('usuario teste putado')
     })
 
-    it('shouldnt put a name of user', async ()=> {
-        user.name = 'usuario teste putado'
-        const res = await request(server).put(`/user/${user.userId + 'erro'}`).send(user).expect(401)
+    it('should not update a user with wrong ID', async () => {
+        await request(server)
+            .put(`/user/${user.userId + 'erro'}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .send(user)
+            .expect(401)
     })
 
-    it('should login an user', async () => {
+    it('should login a user', async () => {
         const form = {
             email: user.email,
             password: user.password
         }
-        const res = await request(server).post('/user/login').send(form).expect(200)
-        expect(res.body.token.length > 1)
+        const res = await request(server)
+            .post('/user/login')
+            .send(form)
+            .expect(200)
+        expect(res.body.accessToken).toBeDefined()
     })
 
-    it('should delete an user', async () => {
-        const res = await request(server).delete(`/user/${user.userId}`).expect(200)
-        console.log(user.userId)
-        expect(res.body === 'User deleted successfully')
+    it('should delete a user', async () => {
+        const res = await request(server)
+            .delete(`/user/${user.userId}`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .expect(200)
+        expect(res.body = 'User deleted successfully')
     })
 })

@@ -147,10 +147,17 @@ class userController implements Controller {
 
     async loginUser (req: Request, res: Response) {
         try {
-            const { email, password } = req.body
+            const { email, password }: { email: string, password: string } = req.body
+
+            const generateTokens = (userId: string): { accessToken: string, refreshToken: string } => {
+                const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET as string, { expiresIn: '15m' })
+                const refreshToken = jwt.sign({ userId }, process.env.REFRESH_JWT_SECRET as string, { expiresIn: '7d' })
+                return { accessToken, refreshToken }
+            }
     
             if (!email || !password) {
-                return res.status(401).send('Email and password are required')
+                res.status(401).send('Email and password are required')
+                return
             }
     
             const user = await prisma.user.findUnique({
@@ -158,19 +165,25 @@ class userController implements Controller {
             })
     
             if (!user) {
-                return res.status(401).send('User not found')
+                res.status(401).send('User not found')
+                return
             }
     
             const isPasswordValid = bcrypt.compareSync(password, user.password)
     
             if (!isPasswordValid) {
-                return res.status(401).send('Invalid password')
+                res.status(401).send('Invalid password')
+                return
             }
     
-            const token = jwt.sign({ userId: user.userId }, 'your_jwt_secret', { expiresIn: '1h' })
+            const { accessToken, refreshToken } = generateTokens(user.userId)
     
-            res.status(200).json({ token: token })
+            res.status(200).json({ accessToken, refreshToken })
         } catch (error) {
+            console.log(error)
             res.status(500).send('Error logging in user')
-}}}
+        }
+    }
+}
+
 export default userController

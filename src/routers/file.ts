@@ -22,6 +22,3 @@ route.post('/upload', upload.single('file'), (req, res) => {
 
 
 export default route
-
-
-

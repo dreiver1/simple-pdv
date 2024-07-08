@@ -10,6 +10,7 @@ import cors = require('cors')
 import authenticateToken from "./midleware/authenticate"
 const morgan = require('morgan')
 
+
 const app = express()
 app.use('/files', express.static('files'))
 app.use(morgan('dev'))
@@ -17,9 +18,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/login', Login)
-app.use('/user',  User)
 
-
+app.use('/user', authenticateToken,  User)
 app.use('/category', authenticateToken, Category)
 app.use('/product', authenticateToken, Product)
 app.use('/item', authenticateToken, Item)

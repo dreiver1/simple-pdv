@@ -136,17 +136,6 @@ describe('test User routers', ()=> {
             .expect(401)
     })
 
-    it('should login a user', async () => {
-        const form = {
-            email: user.email,
-            password: user.password
-        }
-        const res = await request(server)
-            .post('/user/login')
-            .send(form)
-            .expect(200)
-        expect(res.body.accessToken).toBeDefined()
-    })
 
     it('should delete a user', async () => {
         const res = await request(server)

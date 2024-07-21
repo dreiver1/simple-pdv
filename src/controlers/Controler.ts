@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 
+import { PrismaClient } from "@prisma/client";
+
+
 interface Controller {
     get (req: Request, res: Response): void
     post(req: Request, res: Response): void

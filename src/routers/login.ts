@@ -1,6 +1,5 @@
 import { Router } from "express"
 import userController from "../controlers/User"
-import jwt from "jsonwebtoken"
 
 const app = Router()
 const controler = new userController()

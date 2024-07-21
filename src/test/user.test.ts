@@ -119,13 +119,13 @@ describe('test User routers', ()=> {
     })
 
     it('should update a user name', async () => {
-        user.name = 'usuario teste putado'
+        user.name = 'test user updated'
         const res = await request(server)
             .put(`/user/${user.userId}`)
             .set('Authorization', `Bearer ${accessToken}`)
             .send(user)
             .expect(200)
-        expect(res.body.name).toBe('usuario teste putado')
+        expect(res.body.name).toBe('test user updated')
     })
 
     it('should not update a user with wrong ID', async () => {

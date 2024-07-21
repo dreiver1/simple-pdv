@@ -19,7 +19,7 @@ app.use(cors())
 
 app.use('/login', Login)
 
-app.use('/user', authenticateToken,  User)
+app.use('/user',  User)
 app.use('/category', authenticateToken, Category)
 app.use('/product', authenticateToken, Product)
 app.use('/item', authenticateToken, Item)

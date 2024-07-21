@@ -13,14 +13,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  userId   String @id @default(uuid())
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  permissions RolePermission[]
+  users       User[]
+}
+
+model Permission {
+  id    String           @id @default(uuid())
+  name  String           @unique
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId       String     @id @default(uuid())
+  permissionId String
+  Role         Role       @relation(fields: [roleId], references: [id])
+  Permission   Permission @relation(fields: [permissionId], references: [id])
+}
+
+model User {
+  userId   String  @id @default(uuid())
   name     String
   password String
-  userName String @unique
-  email    String @unique
+  userName String  @unique
+  email    String  @unique
   data     String
-  cpf      String @unique
+  cpf      String  @unique
+  Role     Role?   @relation(fields: [roleId], references: [id])
+  roleId   String?
 }
 
 model Product {
@@ -37,7 +59,7 @@ model Product {
   weight             Float?
   categoryCategoryId String?
   items              Item[]
-  imgURL             String @default("/files/1720098149585_por-do-sol-e-silhuetas-de-arvores-nas-montanhas-generative-ai.jpg")
+  imgURL             String    @default("/files/1720098149585_por-do-sol-e-silhuetas-de-arvores-nas-montanhas-generative-ai.jpg")
 }
 
 model Category {
@@ -53,8 +75,8 @@ model Order {
   orderId         String   @id @default(uuid())
   items           Item[]
   date            DateTime @default(now())
-  status          String @default("await paypament")
-  paypamentMethod String @default("none")
+  status          String   @default("await paypament")
+  paypamentMethod String   @default("none")
 }
 
 model Item {

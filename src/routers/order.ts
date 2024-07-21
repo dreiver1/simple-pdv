@@ -6,6 +6,7 @@ const control = new Order()
 const app = Router()
 
 app.get('/', control.get)
+app.get('/full', control.getFullOrders)
 app.get('/:orderId', control.getById)
 app.get('/name/:orderId', control.getByName)
 app.post('/', control.post)

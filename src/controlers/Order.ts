@@ -103,6 +103,24 @@ class Order implements Controller {
             res.status(500).send(error)
         }
     }
+
+    async getFullOrders(req: Request, res: Response) {
+        try {
+            const data = await prisma.order.findMany({
+                include: {
+                    items: {
+                        include: {
+                            Product: true
+                        }
+                    }
+                }
+            })
+            res.status(200).send(data)
+        } catch (error) {
+            console.log(error)
+            res.send(error)
+        }
+    }
 }
 
 export default Order

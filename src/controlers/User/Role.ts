@@ -10,7 +10,7 @@ class Role implements Controller {
         try {
             const role = await prisma.role.create({
                 data: {
-                    name: req.body.name
+                    name: req.body.name,
                 }
             })
             res.status(200).json(role)
@@ -86,3 +86,5 @@ class Role implements Controller {
         }
     }
 }
+
+export default Role

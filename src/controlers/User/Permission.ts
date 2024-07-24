@@ -11,7 +11,7 @@ class Permission implements Controller {
         try {
             const permission = await prisma.permission.create({
                 data: {
-                    name: req.body.name
+                    name: req.body.name,
                 }
             })
             res.status(200).json(permission)

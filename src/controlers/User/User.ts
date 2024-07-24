@@ -15,7 +15,7 @@ class userController {
     post = async (req: Request, res: Response): Promise<void> => {
         try {
             const salt = bcrypt.genSaltSync(10);
-            const { cpf, data, email, name, password, userName } = req.body;
+            const { cpf, data, email, name, password, userName, roleId } = req.body;
             const userByName = await prisma.user.findUnique({
                 where: { userName }
             });
@@ -36,7 +36,8 @@ class userController {
                             email,
                             name,
                             password: hash,
-                            userName
+                            userName,
+                            roleId
                         }
                     });
                     res.status(200).json({
@@ -71,14 +72,14 @@ class userController {
     put = async (req: Request, res: Response): Promise<void> => {
         try {
             const { userId } = req.params;
-            const { data, email, name, userName } = req.body;
+            const { data, email, name, roleId } = req.body;
             const user = await prisma.user.findUnique({
                 where: { userId }
             });
 
             if (!user) {
                 res.status(401).send('user Not Exist');
-            } else if (email.length < 1 || name.length < 1) {
+            } else if (!email || !name) {
                 res.status(401).send('Incorrect form');
             } else {
                 const updatedUser = await prisma.user.update({
@@ -87,13 +88,14 @@ class userController {
                         data,
                         email,
                         name,
-                        userName
+                        roleId
                     }
                 });
                 res.status(200).json(updatedUser);
             }
         } catch (error) {
             res.status(500).send('Error updating user');
+            console.log(error)
         }
     }
 

@@ -1,4 +1,4 @@
-import Category from '../controlers/category'
+import Category from '../controlers/Category'
 import { Router } from 'express'
 
 const control = new Category()

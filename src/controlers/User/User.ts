@@ -203,13 +203,7 @@ class userController {
                 const { userId } = decoded;
                 const { accessToken, refreshToken } = this.generateTokens(userId);
 
-                res.cookie('refreshToken', refreshToken, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict'
-                });
-
-                res.status(200).json({ accessToken });
+                res.status(200).json({ accessToken, refreshToken });
             });
         } catch (error) {
             res.status(500).send('Error refreshing tokens');

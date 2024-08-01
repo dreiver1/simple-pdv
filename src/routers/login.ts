@@ -5,7 +5,7 @@ const app = Router()
 const controler = new userController()
 
 app.post('/', controler.loginUser)
-app.post('/refreshToken', controler.refreshTokens)
+app.post('/refresh', controler.refreshTokens)
   
 
 export default app

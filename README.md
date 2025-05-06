@@ -19,6 +19,8 @@ Simple PDV é um sistema de ponto de venda (PDV) simples, desenvolvido em Node.j
 - **Upload de Arquivos**:
   - Upload e gerenciamento de arquivos estáticos.
 
+---
+
 ## 🚀 Tecnologias Utilizadas
 
 - **Node.js** com **TypeScript**
@@ -30,11 +32,16 @@ Simple PDV é um sistema de ponto de venda (PDV) simples, desenvolvido em Node.j
 - **Cors** para controle de acesso
 - **JWT** para autenticação
 
+---
+
 ## 📂 Estrutura do Projeto
 
 ```plaintext
 simple-pdv/
 ├── prisma/                # Configuração do Prisma e migrações
+│   ├── schema.prisma      # Definição do modelo de dados
+│   ├── migrations/        # Arquivos de migração do Prisma
+│   └── seed.ts            # Script para popular o banco de dados
 ├── src/
 │   ├── controlers/        # Controladores com a lógica de negócios
 │   ├── midleware/         # Middlewares (autenticação, autorização, etc.)
@@ -46,6 +53,30 @@ simple-pdv/
 ├── tsconfig.json          # Configuração do TypeScript
 └── README.md              # Documentação do projeto
 ```
+
+---
+
+## 🔑 Usuário Administrador e Papéis (Roles)
+
+### Usuário Administrador
+O sistema cria automaticamente um usuário administrador ao executar o script de seed. Este usuário possui permissões completas para gerenciar o sistema.
+
+- **Credenciais do Administrador**:
+  - **Username**: `admin`
+  - **Email**: `admin@example.com`
+  - **Senha**: `admin123`
+
+### Papéis (Roles)
+Os papéis definem as permissões atribuídas aos usuários. O papel `Admin` é criado automaticamente e possui todas as permissões básicas, como:
+
+- `CREATE_USER`: Permissão para criar usuários.
+- `DELETE_USER`: Permissão para deletar usuários.
+- `UPDATE_USER`: Permissão para atualizar usuários.
+- `VIEW_USER`: Permissão para visualizar usuários.
+
+Essas permissões são associadas ao papel `Admin` no banco de dados.
+
+---
 
 ## 🛠️ Instalação e Configuração
 
@@ -60,17 +91,27 @@ simple-pdv/
    npm install
    ```
 
-3. Configure o banco de dados no arquivo `prisma/schema.prisma` (por padrão, usa SQLite).
+3. Configure o banco de dados no arquivo `.env` (por padrão, usa SQLite):
+   ```env
+   DATABASE_URL=file:./dev.db
+   ```
 
 4. Execute as migrações do banco de dados:
    ```bash
    npx prisma migrate dev
    ```
 
-5. Inicie o servidor:
+5. Execute o script de seed para criar o usuário administrador e os papéis:
+   ```bash
+   npm run seed
+   ```
+
+6. Inicie o servidor:
    ```bash
    npm run dev
    ```
+
+---
 
 ## 🌐 Acessando as Rotas Principais
 
@@ -92,24 +133,7 @@ http://localhost:3000/api-docs
   - `DELETE /user/:userId` - Deletar um usuário (requer permissão `DELETE_USER`).
   - `PUT /user/:userId` - Atualizar um usuário (requer permissão `UPDATE_USER`).
 
-- **Produtos e Categorias**:  
-  - `GET /product` - Listar todos os produtos.
-  - `GET /category` - Listar todas as categorias.
-
-- **Pedidos**:  
-  - `POST /order` - Criar um novo pedido.
-  - `GET /order` - Listar todos os pedidos.
-
-- **Arquivos**:  
-  - `GET /files` - Acessar arquivos estáticos.
-
-## 🔑 Autenticação
-
-O sistema utiliza **JWT (JSON Web Token)** para autenticação. Para acessar rotas protegidas, você deve incluir o token no cabeçalho da requisição:
-
-```plaintext
-Authorization: Bearer <seu-token>
-```
+---
 
 ## 🧪 Testes
 
@@ -118,6 +142,8 @@ Os testes estão localizados na pasta `src/test`. Para executá-los, use:
 ```bash
 npm run test
 ```
+
+---
 
 ## 📜 Licença
 
@@ -130,13 +156,8 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 Se tiver dúvidas ou sugestões, entre em contato:
 
 - **Autor**: David
-- **Email**: [seu-email@example.com](mailto:seu-email@example.com)
-- **GitHub**: [seu-usuario](https://github.com/seu-usuario)
+- **Email**: [david.bezerra@ufrpe.br](mailto:david.bezerra@ufrpe.br)
+- **GitHub**: [dreiver1](https://github.com/dreiver1)
 ```
 
-### O que foi adicionado:
-1. **Comandos para instalar e iniciar o projeto**.
-2. **Como acessar as rotas principais**.
-3. **Detalhes sobre autenticação e uso do JWT**.
-
-Substitua os placeholders como `seu-usuario` e `seu-email@example.com` com suas informações reais antes de publicar no GitHub.
+---

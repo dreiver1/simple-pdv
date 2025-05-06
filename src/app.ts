@@ -9,9 +9,12 @@ import Role from './routers/user/role'
 import Permission from './routers/user/permission'
 import RolePermission from './routers/user/rolePermission'
 import Login from './routers/login'
+import wellcomeRouter from "./routers/wellcome"
 import cors = require('cors')
 import authenticateToken from "./midleware/authenticate"
-import { setupSwagger } from "./swagger";
+import swaggerUi from 'swagger-ui-express';
+import { setupSwagger } from './swagger'
+
 const morgan = require('morgan')
 
 
@@ -32,7 +35,8 @@ app.use('/category', authenticateToken, Category)
 app.use('/product', authenticateToken, Product)
 app.use('/item', authenticateToken, Item)
 app.use('/order', authenticateToken, Order)
-app.use('/', authenticateToken, File)
+app.use('/File', authenticateToken, File)
+app.use('/', wellcomeRouter)
 
 
 export default app

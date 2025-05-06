@@ -1,6 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
+import path from "path";
 
 const options = {
   definition: {
@@ -12,12 +13,12 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "https://localhost:3000",
         description: "Local server",
       },
     ],
   },
-  apis: ["./src/routers/**/*.ts"], // Caminho para os arquivos de rotas
+  apis: [path.join(__dirname, "./routers/**/*.ts")],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

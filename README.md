@@ -76,6 +76,18 @@ Os papéis definem as permissões atribuídas aos usuários. O papel `Admin` é 
 
 Essas permissões são associadas ao papel `Admin` no banco de dados.
 
+Ao criar um usuário, informe o nome do papel (`roleName`) no corpo da requisição. Exemplo:
+
+```json
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "password123",
+  "userName": "johndoe",
+  "cpf": "12345678901",
+  "roleName": "Admin"
+}
+
 ---
 
 ## 🛠️ Instalação e Configuração
@@ -96,17 +108,28 @@ Essas permissões são associadas ao papel `Admin` no banco de dados.
    DATABASE_URL=file:./dev.db
    ```
 
-4. Execute as migrações do banco de dados:
+  ## 🔧 Configuração de Variáveis de Ambiente
+
+  4. Certifique-se de configurar Chave secreta usada para gerar tokens de acesso no arquivo `.env` por exemplo :
+
+  ```env
+    JWT_SECRET=3f8b9c2a4d6e7f1a2b3c4d5e6f7g8h9i
+    REFRESH_JWT_SECRET=9h8g7f6e5d4c3b2a1f0e9d8c7b6a5f4g
+  ```
+
+Essas chaves são essenciais para o funcionamento do sistema de autenticação baseado em JWT. **Nunca compartilhe essas chaves publicamente.**
+
+5. Execute as migrações do banco de dados:
    ```bash
    npx prisma migrate dev
    ```
 
-5. Execute o script de seed para criar o usuário administrador e os papéis:
+6. Execute o script de seed para criar o usuário administrador e os papéis:
    ```bash
    npm run seed
    ```
 
-6. Inicie o servidor:
+7. Inicie o servidor:
    ```bash
    npm run dev
    ```
@@ -157,7 +180,6 @@ Se tiver dúvidas ou sugestões, entre em contato:
 
 - **Autor**: David
 - **Email**: [david.bezerra@ufrpe.br](mailto:david.bezerra@ufrpe.br)
-<<<<<<< HEAD
 - **GitHub**: [dreiver1](https://github.com/dreiver1)
 ```
 

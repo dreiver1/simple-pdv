@@ -17,6 +17,20 @@ const options = {
         description: "Local server",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT", // Indica que o token é um JWT
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      }
+    ],
   },
   apis: [path.join(__dirname, "./routers/**/*.ts")],
 };

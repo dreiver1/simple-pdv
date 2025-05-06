@@ -11,8 +11,6 @@
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -20,23 +18,14 @@
  *           schema:
  *             type: object
  *             properties:
- *               cpf:
- *                 type: string
- *                 description: User's CPF
- *                 example: "12345678901"
- *               data:
- *                 type: string
- *                 format: date
- *                 description: User's birth date
- *                 example: "1990-01-01"
- *               email:
- *                 type: string
- *                 description: User's email
- *                 example: "user@example.com"
  *               name:
  *                 type: string
  *                 description: User's full name
  *                 example: "John Doe"
+ *               email:
+ *                 type: string
+ *                 description: User's email
+ *                 example: "user@example.com"
  *               password:
  *                 type: string
  *                 description: User's password
@@ -45,17 +34,21 @@
  *                 type: string
  *                 description: User's username
  *                 example: "johndoe"
- *               roleId:
- *                 type: integer
- *                 description: Role ID assigned to the user
- *                 example: 1
+ *               cpf:
+ *                 type: string
+ *                 description: User's CPF
+ *                 example: "12345678901"
+ *               roleName:
+ *                 type: string
+ *                 description: Role name (Admin, Gerente, Vendedor)
+ *                 example: "Admin"
  *     responses:
  *       201:
  *         description: User created successfully
  *       400:
- *         description: Bad request
- *       401:
- *         description: Unauthorized
+ *         description: Invalid role name
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -90,7 +83,7 @@
 
 /**
  * @swagger
- * /{userId}:
+ * /user/{userId}:
  *   get:
  *     summary: Get user by ID
  *     tags: [Users]
@@ -123,7 +116,7 @@
 
 /**
  * @swagger
- * /name/{name}:
+ * /user/name/{name}:
  *   get:
  *     summary: Get user by name
  *     tags: [Users]
@@ -156,7 +149,7 @@
 
 /**
  * @swagger
- * /username/{userName}:
+ * /user/username/{userName}:
  *   get:
  *     summary: Get user by username
  *     tags: [Users]
@@ -189,7 +182,7 @@
 
 /**
  * @swagger
- * /{userId}:
+ * /user/{userId}:
  *   delete:
  *     summary: Delete user by ID
  *     tags: [Users]
@@ -211,7 +204,7 @@
 
 /**
  * @swagger
- * /{userId}:
+ * /user/{userId}:
  *   put:
  *     summary: Update user by ID
  *     tags: [Users]
@@ -253,18 +246,18 @@
 
 import { Router } from "express";
 import userController from "../../controlers/User/User";
+import authenticateToken from "../../midleware/authorizate";
 const app = Router()
 const user = new userController()
 
-import { authorize } from "../../midleware/authorizate";
 
-app.post('/user/', authorize('CREATE_USER'), user.post)
-app.get('/user/', user.get)
+app.post('/', authenticateToken('CREATE_USER'), user.post)
+app.get('/', user.get)
 app.get('/:userId', user.getById)
 app.get('/name/:name', user.getByName)
 app.get('/username/:userName', user.getByUserName)
-app.delete('/:userId', authorize('DELETE_USER'), user.delete)
-app.put('/:userId', authorize('UPDATE_USER'), user.put)
+app.delete('/:userId', authenticateToken('DELETE_USER'), user.delete)
+app.put('/:userId', authenticateToken('UPDATE_USER'), user.put)
 
 
 

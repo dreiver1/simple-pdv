@@ -21,11 +21,11 @@
  *               email:
  *                 type: string
  *                 description: The user's email
- *                 example: user@example.com
+ *                 example: admin@example.com
  *               password:
  *                 type: string
  *                 description: The user's password
- *                 example: password123
+ *                 example: admin123
  *     responses:
  *       200:
  *         description: Authentication successful

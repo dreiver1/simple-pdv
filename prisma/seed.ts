@@ -5,13 +5,14 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Cria o papel "Admin" se não existir
-  const adminRole = await prisma.role.upsert({
-    where: { name: 'Admin' },
-    update: {},
-    create: {
-      name: 'Admin',
-    },
-  });
+  const roles = ['Admin', 'Manager', 'Seller'];
+  for (const roleName of roles) {
+    await prisma.role.upsert({
+      where: { name: roleName },
+      update: {},
+      create: { name: roleName },
+    });
+  }
 
   // Cria permissões básicas se não existirem
   const permissions = ['CREATE_USER', 'DELETE_USER', 'UPDATE_USER', 'VIEW_USER'];
@@ -24,6 +25,15 @@ async function main() {
   }
 
   // Relaciona permissões ao papel "Admin"
+
+const adminRole = await prisma.role.findUnique({
+    where: { name: 'Admin' },
+  });
+
+  if (!adminRole) {
+    throw new Error('Erro ao encontrar o papel Admin.');
+}
+
   const allPermissions = await prisma.permission.findMany();
 for (const permission of allPermissions) {
   await prisma.rolePermission.upsert({
@@ -52,8 +62,7 @@ for (const permission of allPermissions) {
       password: hashedPassword,
       userName: 'admin',
       cpf: '00000000000',
-      data: '1990-01-01',
-      roleId: adminRole.id,
+      roleName: "Admin",
     },
   });
 

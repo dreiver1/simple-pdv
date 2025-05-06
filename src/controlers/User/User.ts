@@ -15,17 +15,23 @@ class userController {
     post = async (req: Request, res: Response): Promise<void> => {
         try {
             const salt = bcrypt.genSaltSync(10);
-            const { cpf, data, email, name, password, userName, roleId } = req.body;
+            const { cpf, data, email, name, password, userName, roleName } = req.body;
             const userByName = await prisma.user.findUnique({
                 where: { userName }
             });
             const userByCpf = await prisma.user.findUnique({
                 where: { cpf }
             });
+
+            const role = await prisma.role.findUnique({ where: { name: roleName } });
+            if (!role) {
+                res.status(401).send('role Not Exist');
+            }
+
             if (userByCpf || userByName) {
                 res.status(401).send('userAlreadExist');
             } else {
-                if (email.length < 1 || name.length < 1 || password.length < 8 || cpf.length < 11) {
+                if (email.length < 5 || name.length < 5 || password.length < 8 || cpf.length < 11) {
                     res.status(401).send('Incorrect form');
                 } else {
                     var hash = bcrypt.hashSync(password, salt);
@@ -37,7 +43,7 @@ class userController {
                             name,
                             password: hash,
                             userName,
-                            roleId
+                            roleName
                         }
                     });
                     res.status(200).json({
@@ -72,7 +78,7 @@ class userController {
     put = async (req: Request, res: Response): Promise<void> => {
         try {
             const { userId } = req.params;
-            const { data, email, name, roleId } = req.body;
+            const { data, email, name, roleName } = req.body;
             const user = await prisma.user.findUnique({
                 where: { userId }
             });
@@ -88,7 +94,7 @@ class userController {
                         data,
                         email,
                         name,
-                        roleId
+                        roleName
                     }
                 });
                 res.status(200).json(updatedUser);

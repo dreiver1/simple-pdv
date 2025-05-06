@@ -41,10 +41,11 @@ model User {
   password String
   userName String  @unique
   email    String  @unique
-  data     String
+  data     DateTime @default(now())
+  phone    String? @unique
   cpf      String  @unique
-  Role     Role?   @relation(fields: [roleId], references: [id])
-  roleId   String?
+  Role     Role?   @relation(fields: [roleName], references: [name])
+  roleName String? @default("Seller")   
 }
 
 model Product {

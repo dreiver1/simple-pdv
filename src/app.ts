@@ -11,10 +11,12 @@ import RolePermission from './routers/user/rolePermission'
 import Login from './routers/login'
 import cors = require('cors')
 import authenticateToken from "./midleware/authenticate"
+import { setupSwagger } from "./swagger";
 const morgan = require('morgan')
 
 
 const app = express()
+setupSwagger(app);
 app.use('/files', express.static('files'))
 app.use(morgan('dev'))
 app.use(express.json())

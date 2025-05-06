@@ -130,8 +130,8 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 Se tiver dúvidas ou sugestões, entre em contato:
 
 - **Autor**: David
-- **Email**: [seu-email@example.com](mailto:seu-email@example.com)
-- **GitHub**: [seu-usuario](https://github.com/seu-usuario)
+- **Email**: [david.bezerra@ufrpe.br](mailto:david.bezerra@ufrpe.br)
+- **GitHub**: [dreiver1](https://github.com/seu-usuario)
 ```
 
 ### O que foi adicionado:

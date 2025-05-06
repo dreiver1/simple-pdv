@@ -157,6 +157,7 @@ Se tiver dúvidas ou sugestões, entre em contato:
 
 - **Autor**: David
 - **Email**: [david.bezerra@ufrpe.br](mailto:david.bezerra@ufrpe.br)
+<<<<<<< HEAD
 - **GitHub**: [dreiver1](https://github.com/dreiver1)
 ```
 

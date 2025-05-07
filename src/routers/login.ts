@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   name: Login
+ *   name: Authentication
  *   description: User authentication and token management
  */
 
@@ -10,7 +10,7 @@
  * /login:
  *   post:
  *     summary: Authenticate a user and generate access and refresh tokens
- *     tags: [Login]
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
@@ -51,7 +51,7 @@
  * /login/refresh:
  *   post:
  *     summary: Refresh access and refresh tokens
- *     tags: [Login]
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:

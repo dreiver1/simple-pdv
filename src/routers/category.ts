@@ -4,6 +4,8 @@
  *   schemas:
  *     Category:
  *       type: object
+ *       required:
+ *         - name
  *       properties:
  *         id:
  *           type: string
@@ -11,7 +13,6 @@
  *         name:
  *           type: string
  *           description: The name of the category
- *           required: true
  *         description:
  *           type: string
  *           description: A brief description of the category
@@ -39,6 +40,8 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Category'
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -63,6 +66,8 @@
  *               $ref: '#/components/schemas/Category'
  *       404:
  *         description: Category not found
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -80,6 +85,10 @@
  *     responses:
  *       201:
  *         description: Category created successfully
+ *       400:
+ *         description: Category already exists
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -100,6 +109,8 @@
  *         description: Category deleted successfully
  *       404:
  *         description: Category not found
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -126,6 +137,8 @@
  *         description: Category updated successfully
  *       404:
  *         description: Category not found
+ *       500:
+ *         description: Internal server error
  */
 
 /**
@@ -150,6 +163,8 @@
  *               $ref: '#/components/schemas/Category'
  *       404:
  *         description: Category not found
+ *       500:
+ *         description: Internal server error
  */
 import Category from '../controlers/category'
 import { Router } from 'express'

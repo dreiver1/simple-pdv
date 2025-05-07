@@ -17,6 +17,18 @@ const options = {
         description: "Local server",
       },
     ],
+    tags: [
+      { name: "Authentication", description: "Login and authentication routes" },
+      { name: "Files", description: "File management" },
+      { name: "Users", description: "User management" },
+      { name: "Products", description: "Product management" },
+      { name: "Categories", description: "Category management" },
+      { name: "Orders", description: "Order management" },
+      { name: "Items", description: "Item management" },
+      { name: "Roles", description: "Role management" },
+      { name: "Permissions", description: "Permission management" },
+      { name: "RolePermissions", description: "Role-Permission relationships" },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {

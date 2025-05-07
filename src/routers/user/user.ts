@@ -262,3 +262,50 @@ app.put('/:userId', authenticateToken('UPDATE_USER'), user.put)
 
 
 export default app
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *         - userName
+ *         - cpf
+ *         - roleName
+ *       properties:
+ *         userId:
+ *           type: string
+ *           description: The unique identifier for the user
+ *         name:
+ *           type: string
+ *           description: The full name of the user
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: The email address of the user
+ *         password:
+ *           type: string
+ *           description: The password for the user
+ *         userName:
+ *           type: string
+ *           description: The username for the user
+ *         cpf:
+ *           type: string
+ *           description: The CPF (Cadastro de Pessoa Física) of the user
+ *         roleName:
+ *           type: string
+ *           description: The role assigned to the user (e.g., Admin, Gerente, Vendedor)
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the user was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the user was last updated
+ */

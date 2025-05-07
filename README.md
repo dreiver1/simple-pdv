@@ -1,40 +1,47 @@
-```markdown
-# Simple PDV
+# **Simple PDV**
 
-Simple PDV é um sistema de ponto de venda (PDV) simples, desenvolvido em Node.js com TypeScript, utilizando Express para a criação de APIs RESTful e Prisma como ORM para gerenciar o banco de dados.
-
-## 📋 Funcionalidades
-
-- **Gerenciamento de Usuários**:
-  - Criar, listar, atualizar e deletar usuários.
-  - Autenticação e login de usuários.
-  - Gerenciamento de permissões e papéis (roles).
-
-- **Gerenciamento de Produtos e Categorias**:
-  - CRUD de produtos e categorias.
-
-- **Gerenciamento de Pedidos**:
-  - Criar e gerenciar pedidos e itens.
-
-- **Upload de Arquivos**:
-  - Upload e gerenciamento de arquivos estáticos.
+Simple PDV é um sistema de ponto de venda (PDV) desenvolvido em **Node.js** com **TypeScript**, utilizando **Express** para a criação de APIs RESTful e **Prisma** como ORM para gerenciar o banco de dados. Este sistema permite o gerenciamento de usuários, produtos, pedidos, categorias, permissões e muito mais.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## **📋 Funcionalidades**
+
+- **Gerenciamento de Usuários**:
+  - CRUD de usuários.
+  - Autenticação e autorização com JWT.
+  - Atribuição de papéis (roles) e permissões.
+
+- **Gerenciamento de Produtos**:
+  - CRUD de produtos com suporte a categorias.
+
+- **Gerenciamento de Pedidos**:
+  - CRUD de pedidos e itens associados.
+
+- **Gerenciamento de Categorias**:
+  - Suporte a categorias hierárquicas.
+
+- **Gerenciamento de Arquivos**:
+  - Upload e gerenciamento de arquivos.
+
+- **Permissões e Papéis**:
+  - Controle de acesso baseado em papéis e permissões.
+
+---
+
+## **🚀 Tecnologias Utilizadas**
 
 - **Node.js** com **TypeScript**
 - **Express** para criação de APIs RESTful
 - **Prisma** como ORM
-- **SQLite** como banco de dados
+- **SQLite** como banco de dados (pode ser substituído por outros bancos suportados pelo Prisma)
+- **JWT** para autenticação
 - **Swagger** para documentação da API
 - **Morgan** para logs de requisições
 - **Cors** para controle de acesso
-- **JWT** para autenticação
 
 ---
 
-## 📂 Estrutura do Projeto
+## **📂 Estrutura do Projeto**
 
 ```plaintext
 simple-pdv/
@@ -56,9 +63,9 @@ simple-pdv/
 
 ---
 
-## 🔑 Usuário Administrador e Papéis (Roles)
+## **🔑 Usuário Administrador e Papéis (Roles)**
 
-### Usuário Administrador
+### **Usuário Administrador**
 O sistema cria automaticamente um usuário administrador ao executar o script de seed. Este usuário possui permissões completas para gerenciar o sistema.
 
 - **Credenciais do Administrador**:
@@ -66,101 +73,96 @@ O sistema cria automaticamente um usuário administrador ao executar o script de
   - **Email**: `admin@example.com`
   - **Senha**: `admin123`
 
-### Papéis (Roles)
-Os papéis definem as permissões atribuídas aos usuários. O papel `Admin` é criado automaticamente e possui todas as permissões básicas, como:
+### **Papéis (Roles)**
+Os papéis definem as permissões atribuídas aos usuários. O sistema possui três papéis básicos:
 
-- `CREATE_USER`: Permissão para criar usuários.
-- `DELETE_USER`: Permissão para deletar usuários.
-- `UPDATE_USER`: Permissão para atualizar usuários.
-- `VIEW_USER`: Permissão para visualizar usuários.
-
-Essas permissões são associadas ao papel `Admin` no banco de dados.
-
-Ao criar um usuário, informe o nome do papel (`roleName`) no corpo da requisição. Exemplo:
-
-```json
-{
-  "name": "John Doe",
-  "email": "johndoe@example.com",
-  "password": "password123",
-  "userName": "johndoe",
-  "cpf": "12345678901",
-  "roleName": "Admin"
-}
+- **Admin**: Acesso total ao sistema.
+- **Gerente**: Acesso gerencial, com permissões limitadas.
+- **Vendedor**: Acesso básico para operações de venda.
 
 ---
 
-## 🛠️ Instalação e Configuração
+## **🛠️ Instalação e Configuração**
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/simple-pdv.git
-   cd simple-pdv
-   ```
+### **1. Clone o Repositório**
+```bash
+git clone https://github.com/dreiver1/simple-pdv.git
+cd simple-pdv
+```
 
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
+### **2. Instale as Dependências**
+```bash
+npm install
+```
 
-3. Configure o banco de dados no arquivo `.env` (por padrão, usa SQLite):
-   ```env
-   DATABASE_URL=file:./dev.db
-   ```
+### **3. Configure o Banco de Dados**
+Crie um arquivo .env na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
-  ## 🔧 Configuração de Variáveis de Ambiente
+```env
+DATABASE_URL=file:./dev.db
+JWT_SECRET=3f8b9c2a4d6e7f1a2b3c4d5e6f7g8h9i
+REFRESH_JWT_SECRET=9h8g7f6e5d4c3b2a1f0e9d8c7b6a5f4g
+```
 
-  4. Certifique-se de configurar Chave secreta usada para gerar tokens de acesso no arquivo `.env` por exemplo :
+### **4. Execute as Migrações**
+```bash
+npx prisma migrate dev
+```
 
-  ```env
-    JWT_SECRET=3f8b9c2a4d6e7f1a2b3c4d5e6f7g8h9i
-    REFRESH_JWT_SECRET=9h8g7f6e5d4c3b2a1f0e9d8c7b6a5f4g
-  ```
+### **5. Popule o Banco de Dados**
+```bash
+npm run seed
+```
 
-Essas chaves são essenciais para o funcionamento do sistema de autenticação baseado em JWT. **Nunca compartilhe essas chaves publicamente.**
-
-5. Execute as migrações do banco de dados:
-   ```bash
-   npx prisma migrate dev
-   ```
-
-6. Execute o script de seed para criar o usuário administrador e os papéis:
-   ```bash
-   npm run seed
-   ```
-
-7. Inicie o servidor:
-   ```bash
-   npm run dev
-   ```
+### **6. Inicie o Servidor**
+```bash
+npm run dev
+```
 
 ---
 
-## 🌐 Acessando as Rotas Principais
+## **🌐 Documentação da API**
 
-### Documentação da API
 Acesse a documentação interativa gerada pelo Swagger:
+
 ```
 http://localhost:3000/api-docs
 ```
 
-### Rotas Principais
-- **Login**:  
-  `POST /login`  
-  Endpoint para autenticação de usuários.
+### **Rotas Principais**
 
-- **Usuários**:  
-  - `POST /user` - Criar um novo usuário (requer permissão `CREATE_USER`).
-  - `GET /user` - Listar todos os usuários.
-  - `GET /user/:userId` - Obter detalhes de um usuário pelo ID.
-  - `DELETE /user/:userId` - Deletar um usuário (requer permissão `DELETE_USER`).
-  - `PUT /user/:userId` - Atualizar um usuário (requer permissão `UPDATE_USER`).
+#### **Usuários**
+- `POST /user`: Criar um novo usuário.
+- `GET /user`: Listar todos os usuários.
+- `GET /user/{userId}`: Obter detalhes de um usuário pelo ID.
+- `DELETE /user/{userId}`: Deletar um usuário.
+- `PUT /user/{userId}`: Atualizar um usuário.
+
+#### **Produtos**
+- `POST /product`: Criar um novo produto.
+- `GET /product`: Listar todos os produtos.
+- `GET /product/{productId}`: Obter detalhes de um produto pelo ID.
+- `DELETE /product/{productId}`: Deletar um produto.
+- `PUT /product/{productId}`: Atualizar um produto.
+
+#### **Pedidos**
+- `POST /order`: Criar um novo pedido.
+- `GET /order`: Listar todos os pedidos.
+- `GET /order/{orderId}`: Obter detalhes de um pedido pelo ID.
+- `DELETE /order/{orderId}`: Deletar um pedido.
+- `PUT /order/{orderId}`: Atualizar um pedido.
+
+#### **Arquivos**
+- `POST /file`: Fazer upload de um arquivo.
+- `GET /file`: Listar todos os arquivos.
+- `GET /file/{fileId}`: Obter detalhes de um arquivo pelo ID.
+- `DELETE /file/{fileId}`: Deletar um arquivo.
 
 ---
 
-## 🧪 Testes
+## **🧪 Testes**
 
-Os testes estão localizados na pasta `src/test`. Para executá-los, use:
+Os testes estão localizados na pasta test. Para executá-los, use:
 
 ```bash
 npm run test
@@ -168,19 +170,14 @@ npm run test
 
 ---
 
-## 📜 Licença
+## **📜 Licença**
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto está licenciado sob a MIT License.
 
 ---
 
-### 📬 Contato
+## **📬 Contato**
 
-Se tiver dúvidas ou sugestões, entre em contato:
-
-- **Autor**: David
+- **Autor**: David Bezerra
 - **Email**: [david.bezerra@ufrpe.br](mailto:david.bezerra@ufrpe.br)
 - **GitHub**: [dreiver1](https://github.com/dreiver1)
-```
-
----
